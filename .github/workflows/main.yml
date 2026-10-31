@@ -14,11 +14,8 @@ jobs:
     uses: ./.github/workflows/locales.yml
     secrets:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  # release.yml now runs semantic-release and then builds/pushes the Docker image
   release:
     needs: [config, locales, lint]
     if: needs.locales.outputs.made_commit != 'true' && needs.config.outputs.made_commit != 'true' && always()
     uses: ./.github/workflows/release.yml
-  docker:
-    needs: [config, locales, lint]
-    if: needs.locales.outputs.made_commit != 'true' && needs.config.outputs.made_commit != 'true' && always()
-    uses: ./.github/workflows/docker.yml

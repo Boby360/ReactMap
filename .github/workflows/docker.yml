@@ -1,5 +1,12 @@
 name: Docker
-on: workflow_call
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: 'Release version to add as an extra image tag (empty = no release was made)'
+        type: string
+        required: false
+        default: ''
 
 env:
   REGISTRY: ghcr.io
@@ -10,8 +17,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.1
+        with:
+          # On pushes, build the branch tip rather than the triggering SHA so the
+          # "chore(release)" commit is included. Other events (e.g. pull_request)
+          # keep the default ref.
+          ref: ${{ github.event_name == 'push' && github.ref_name || '' }}
       - name: Set .gitsha
-        run: 'echo ${{ github.sha }} > .gitsha'
+        run: 'git rev-parse HEAD > .gitsha'
       - name: Set .gitref
         run: 'echo ${{ github.ref }} > .gitref'
 
@@ -27,6 +39,9 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=raw,value=${{ inputs.version }},enable=${{ inputs.version != '' }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
