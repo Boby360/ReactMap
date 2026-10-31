@@ -192,7 +192,7 @@
         "name": "Valentine's Day",
         "enabled": true,
         "images": [
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/A_perfect_SVG_heart.svg/20px-A_perfect_SVG_heart.svg.png"
+          "/images/holiday/heart.svg"
         ],
         "imageScale": 1.5,
         "startMonth": 2,
@@ -204,7 +204,7 @@
         "name": "International Women's Day",
         "enabled": true,
         "images": [
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Emoji_u1f338.svg/20px-Emoji_u1f338.svg.png"
+          "/images/holiday/blossom.svg"
         ],
         "imageScale": 1,
         "startDay": 8,
@@ -216,8 +216,8 @@
         "name": "Halloween",
         "enabled": true,
         "images": [
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Fluent_Emoji_flat_1f383.svg/640px-Fluent_Emoji_flat_1f383.svg.png",
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Ghost.svg/640px-Ghost.svg.png"
+          "/images/holiday/pumpkin.svg",
+          "/images/holiday/ghost.svg"
         ],
         "imageScale": 2,
         "startDay": 29,
