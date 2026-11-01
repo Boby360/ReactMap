@@ -13,6 +13,7 @@ import { useStorage } from '@store/useStorage'
 import { useOpacity } from '@hooks/useOpacity'
 import { useForcePopup } from '@hooks/useForcePopup'
 import { useManualPopupTracker } from '@hooks/useManualPopupTracker'
+import { useStableIcon } from '@hooks/useStableIcon'
 import { sendNotification } from '@services/desktopNotification'
 import { useMapStore } from '@store/useMapStore'
 import { TooltipWrapper } from '@components/ToolTipWrapper'
@@ -218,6 +219,27 @@ const BasePokemonTile = (pkmn) => {
     pkmn.sta_iv,
     pokemonForm,
   ])
+  const icon = useStableIcon(
+    Boolean(backgroundUrl) ||
+      (pkmn.bestPvp !== null && pkmn.bestPvp < 4 && extras.length === 0) ||
+      showGlow ||
+      showWeather ||
+      opacity < 1 ||
+      pkmn.seen_type === 'nearby_cell'
+      ? fancyPokemonMarker({
+          pkmn,
+          iconUrl,
+          iconSize,
+          showGlow,
+          showWeather,
+          badge: extras.length ? null : badge,
+          opacity,
+          timeOfDay,
+          backgroundUrl,
+        })
+      : basicPokemonMarker({ iconUrl, iconSize }),
+  )
+
   if (pkmn.expire_timestamp < Date.now() / 1000) {
     return null
   }
@@ -259,26 +281,7 @@ const BasePokemonTile = (pkmn) => {
           pkmn.bestPvp
         }
         position={finalLocation}
-        icon={
-          Boolean(backgroundUrl) ||
-          (pkmn.bestPvp !== null && pkmn.bestPvp < 4 && extras.length === 0) ||
-          showGlow ||
-          showWeather ||
-          opacity < 1 ||
-          pkmn.seen_type === 'nearby_cell'
-            ? fancyPokemonMarker({
-                pkmn,
-                iconUrl,
-                iconSize,
-                showGlow,
-                showWeather,
-                badge: extras.length ? null : badge,
-                opacity,
-                timeOfDay,
-                backgroundUrl,
-              })
-            : basicPokemonMarker({ iconUrl, iconSize })
-        }
+        icon={icon}
         eventHandlers={{ popupopen: handlePopupOpen }}
       >
         <Popup position={finalLocation}>
