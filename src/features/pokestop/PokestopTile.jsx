@@ -9,6 +9,7 @@ import { useStorage } from '@store/useStorage'
 import { useRouteStore, resolveRoutePoiKey } from '@features/route'
 import { useForcePopup } from '@hooks/useForcePopup'
 import { useManualPopupTracker } from '@hooks/useManualPopupTracker'
+import { useStableIcon } from '@hooks/useStableIcon'
 import { TooltipWrapper } from '@components/ToolTipWrapper'
 import { isBuddyShowcaseFocus } from '@utils/showcaseFocus'
 
@@ -175,15 +176,17 @@ const BasePokestopTile = (pokestop) => {
   )
   const handlePopupOpen = useManualPopupTracker('pokestops', pokestop.id)
 
-  const icon = usePokestopMarker({
-    hasQuest,
-    hasLure,
-    markerEvents: visibleMarkerEvents,
-    markerInvasions: visibleMarkerInvasions,
-    baseIncidentDisplay:
-      canShowEvents && showEventStops ? incidentState.baseDisplay : '',
-    ...pokestop,
-  })
+  const icon = useStableIcon(
+    usePokestopMarker({
+      hasQuest,
+      hasLure,
+      markerEvents: visibleMarkerEvents,
+      markerInvasions: visibleMarkerInvasions,
+      baseIncidentDisplay:
+        canShowEvents && showEventStops ? incidentState.baseDisplay : '',
+      ...pokestop,
+    }),
+  )
 
   return hasQuest ||
     hasLure ||

@@ -8,6 +8,7 @@ import { basicEqualFn, useMemory } from '@store/useMemory'
 import { useStorage } from '@store/useStorage'
 import { useForcePopup } from '@hooks/useForcePopup'
 import { useManualPopupTracker } from '@hooks/useManualPopupTracker'
+import { useStableIcon } from '@hooks/useStableIcon'
 import { TooltipWrapper } from '@components/ToolTipWrapper'
 
 import {
@@ -84,11 +85,15 @@ const BaseStationTile = (station) => {
   )
   const handlePopupOpen = useManualPopupTracker('stations', station.id)
 
+  const icon = useStableIcon(
+    useStationMarker(station, battleState.markerBattle),
+  )
+
   return (
     <Marker
       ref={setMarkerRef}
       position={[station.lat, station.lon]}
-      icon={useStationMarker(station, battleState.markerBattle)}
+      icon={icon}
       eventHandlers={{ popupopen: handlePopupOpen }}
     >
       <Popup position={[station.lat, station.lon]}>

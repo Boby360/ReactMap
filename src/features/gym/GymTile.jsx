@@ -10,6 +10,7 @@ import { useStorage } from '@store/useStorage'
 import { useOpacity } from '@hooks/useOpacity'
 import { useForcePopup } from '@hooks/useForcePopup'
 import { useManualPopupTracker } from '@hooks/useManualPopupTracker'
+import { useStableIcon } from '@hooks/useStableIcon'
 import { sendNotification } from '@services/desktopNotification'
 import { TooltipWrapper } from '@components/ToolTipWrapper'
 import { getTimeUntil } from '@utils/getTimeUntil'
@@ -209,22 +210,25 @@ const BaseGymTile = (gym) => {
     raidIconUrl,
     timerToDisplay,
   ])
+  const icon = useStableIcon(
+    gymMarker({
+      showDiamond,
+      showExBadge,
+      showArBadge,
+      showRaidLevel,
+      opacity,
+      gymIconUrl,
+      gymIconSize,
+      raidIconUrl,
+      raidIconSize,
+      ...gym,
+    }),
+  )
   return (
     <Marker
       ref={setMarkerRef}
       position={[gym.lat, gym.lon]}
-      icon={gymMarker({
-        showDiamond,
-        showExBadge,
-        showArBadge,
-        showRaidLevel,
-        opacity,
-        gymIconUrl,
-        gymIconSize,
-        raidIconUrl,
-        raidIconSize,
-        ...gym,
-      })}
+      icon={icon}
       eventHandlers={{
         click: () => {
           if (hasRoutes) {
