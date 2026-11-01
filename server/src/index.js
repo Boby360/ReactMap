@@ -37,6 +37,20 @@ const { bindConnections } = require('./models')
 const { migrate } = require('./db/migrate')
 const { rootRouter } = require('./routes/rootRouter')
 
+// Vite emits content-hashed file names (e.g. vendor-AbCd1234.js), so their
+// contents never change and browsers can cache them indefinitely. HTML must
+// always be revalidated so new releases pick up the new hashed files.
+const HASHED_ASSET = /-[\w-]{8}\.(?:js|css)$/
+
+/** @param {import('express').Response} res @param {string} filePath */
+function setStaticCacheHeaders(res, filePath) {
+  if (HASHED_ASSET.test(filePath)) {
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable')
+  } else if (filePath.endsWith('.html')) {
+    res.setHeader('Cache-Control', 'no-cache')
+  }
+}
+
 const startServer = async () => {
   await state.event.initialize()
 
@@ -67,9 +81,12 @@ const startServer = async () => {
   app.use(
     loggerMiddleware,
     noSourceMapMiddleware,
-    express.static(distDir, { dotfiles: 'allow' }),
-    sessionMiddleware(),
     compression(),
+    express.static(distDir, {
+      dotfiles: 'allow',
+      setHeaders: setStaticCacheHeaders,
+    }),
+    sessionMiddleware(),
     express.json({
       limit: '50mb',
       verify: (req, _res, buf) => {
