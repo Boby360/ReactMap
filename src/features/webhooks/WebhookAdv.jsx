@@ -20,7 +20,7 @@ import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
 import { useTranslation } from 'react-i18next'
 import { useLazyQuery } from '@apollo/client'
-import { debounce } from 'lodash'
+import debounce from 'lodash/debounce'
 
 import { useMemory } from '@store/useMemory'
 import { useStorage } from '@store/useStorage'
