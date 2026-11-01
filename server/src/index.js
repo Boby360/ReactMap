@@ -37,7 +37,7 @@ const { bindConnections } = require('./models')
 const { migrate } = require('./db/migrate')
 const { rootRouter } = require('./routes/rootRouter')
 
-// Vite emits content-hashed file names (e.g. vendor-DEhjwNLE.js), so their
+// Vite emits content-hashed file names (e.g. vendor-AbCd1234.js), so their
 // contents never change and browsers can cache them indefinitely. HTML must
 // always be revalidated so new releases pick up the new hashed files.
 const HASHED_ASSET = /-[\w-]{8}\.(?:js|css)$/
