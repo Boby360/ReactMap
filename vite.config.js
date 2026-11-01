@@ -152,7 +152,7 @@ const viteConfig = defineConfig(({ mode }) => {
       legalComments: 'none',
     },
     build: {
-      target: ['safari11.1', 'chrome64', 'firefox66', 'edge88'],
+      target: ['es2020', 'safari14', 'chrome87', 'firefox78', 'edge88'],
       outDir: resolve(
         __dirname,
         `./dist${
@@ -180,8 +180,8 @@ const viteConfig = defineConfig(({ mode }) => {
           manualChunks: (id) => {
             if (id.endsWith('.css')) return 'index'
             if (id.includes('node_modules')) return 'vendor'
-            // return id.replace(/.*node_modules\//, '').split('/')[0]
-            if (id.includes('src')) return version.replaceAll('.', '-')
+            // App code is left to Rollup so lazy-loaded pages and features
+            // get their own chunks instead of being forced into one file.
           },
         },
       },

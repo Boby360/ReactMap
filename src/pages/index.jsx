@@ -5,13 +5,25 @@ import { Route, Routes } from 'react-router'
 import { Config } from '@components/Config'
 
 import { MapPage } from './map'
-import { LoginPage } from './login'
-import { BlockedPage } from './Blocked'
 import { ErrorPage } from './Error'
-import { DataManagerPage } from './data'
-import { ResetPage } from './Reset'
-import { LocalesPage } from './locales'
 
+// Pages other than the map are loaded on demand so their code is not part
+// of the initial map bundle.
+const LoginPage = React.lazy(() =>
+  import('./login').then(({ LoginPage: Page }) => ({ default: Page })),
+)
+const BlockedPage = React.lazy(() =>
+  import('./Blocked').then(({ BlockedPage: Page }) => ({ default: Page })),
+)
+const DataManagerPage = React.lazy(() =>
+  import('./data').then(({ DataManagerPage: Page }) => ({ default: Page })),
+)
+const ResetPage = React.lazy(() =>
+  import('./Reset').then(({ ResetPage: Page }) => ({ default: Page })),
+)
+const LocalesPage = React.lazy(() =>
+  import('./locales').then(({ LocalesPage: Page }) => ({ default: Page })),
+)
 const Playground = React.lazy(() =>
   import('./playground').then(({ PlaygroundPage }) => ({
     default: PlaygroundPage,

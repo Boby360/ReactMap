@@ -6,7 +6,7 @@ import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import Slider from '@mui/material/Slider'
 import { useTranslation } from 'react-i18next'
-import { debounce } from 'lodash'
+import debounce from 'lodash/debounce'
 
 import { RADIUS_CHOICES } from '@assets/constants'
 
